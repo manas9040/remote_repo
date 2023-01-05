@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends 'bloggingapp/base.html'%}
+{% block title_block%}{{post.title}}{%endblock%}
+{% block content_block %}
+      <h1 ><strong><em>{{post.title|title}}</em></strong></h1>
+      <p class="date" style="color:cyan;font-style:oblique;font-weight:bold;">Published on {{post.publish}} by {{post.author|title}}</p>
+       {{post.body|linebreaks }}<br>
+       <div class="container" align="center">
+            <a class="btn btn-lg btn-success" href="/{{post.id}}/share">Share Post By Email</a>
+      </div>
+    
+      {% with comments.count as comments_count %}
+      <h2 style="border-bottom:5px green solid;">{{comments_count}} Comment{{comments_count|pluralize}} </h2>
+      {%endwith%}
+      {% if comments%}
+      {% for comment in comments%}
+      <p id='ch' style="border-bottom:3px mediumspringgreen solid;font-style:italic;">Comment {{forloop.counter}} by {{comment.name |title}} on {{comment.created}}</p>
+      <div class="cb" style="color:yellow;font-weight:bold; font-size :20px;">{{comment.body|title|linebreaks}}  </div>
+      {%endfor%}
+      {%else%}
+      <p>No comments posted yet!!!<p>
+      {%endif%}
+      {% if csubmit %}
+      <h3>Comment submitted successfully!!!</h3>
+      {%else%}
+      <form class="" method="post">
+        {{form.as_p}}
+        {%csrf_token%}
+        <input type="submit" class="btn btn-primary" name="" value="AddComment">
+      </form>
+      {%endif%}
+      
+
+
+{%endblock%}
